@@ -1,0 +1,885 @@
+
+use eddiextraction
+
+---Adding Rep Table---
+Exec rep_table Eddi_Refresh_Set151
+
+/***
+select distinct d_status from eddi_data..venue_rep_new
+
+select distinct temp_id,cons,location,locationaddress,locationcity,locationstate,
+locationcountry,locationzip,locationlatitude,locationlongitude,cid,venueid,venue,address,city,state,
+zip,country,latitude,longitude,capacity,vcategory from Eddi_Refresh_Set151_rep where isnull (cid,'')!=''
+
+drop table Set_Rep_demo
+
+select distinct temp_id,cons,location,locationaddress,locationcity,locationstate,
+locationcountry,locationzip,locationlatitude,locationlongitude,cid,venueid,venue,address,city,state,
+zip,country,latitude,longitude,capacity,vcategory into Set_Rep_demo from Eddi_Refresh_Set151_rep where isnull (cid,'')!='' --65953
+
+select distinct Temp_id,cid,venueid,venue,address,city,state,zip,country,latitude,longitude,capacity,vcategory from Eddi_Refresh_Set151 where isnull (Venueid,'')!=''
+
+drop table Set_Rep_demo2
+
+select distinct Temp_id,cid,venueid,venue,address,city,state,zip,country,latitude,longitude,capacity,vcategory into Set_Rep_demo2
+from Eddi_Refresh_Set151 where isnull (Venueid,'')!='' --18658
+
+update Set_Rep_demo set venueid =''
+update Set_Rep_demo set venue =''
+update Set_Rep_demo set address =''
+update Set_Rep_demo set city =''
+update Set_Rep_demo set state =''
+update Set_Rep_demo set zip =''
+update Set_Rep_demo set country =''
+update Set_Rep_demo set latitude =''
+update Set_Rep_demo set longitude =''
+update Set_Rep_demo set capacity =''
+update Set_Rep_demo set vcategory =''
+
+update a set
+a.venueid=b.venueid
+from Set_Rep_demo a join
+Set_Rep_demo2 b on a.temp_id=b.temp_id;
+
+select count(*) from Set_Rep_demo where isnull(venueid,'')='' --43659,48327,47856
+
+Delete Set_Rep_demo where isnull(venueid,'')=''
+
+update a set
+a.Venue=b.venue,
+a.Address=b.Address,
+a.City=b.City,
+a.State=b.State,
+a.Country=b.Country,
+a.Zip=b.Zip,
+a.Latitude=b.Latitude,
+a.Longitude=b.Longitude,
+a.capacity=b.capacity,
+a.vcategory=b.vcategory
+from Set_Rep_demo a
+join Set_Rep_demo2 b on a.Venueid=b.venueid
+
+select count(*) from Set_Rep_demo --18611
+
+insert into Eddi_data..venue_rep_new (temp_id,cons,location,locationaddress,locationcity,locationstate,
+locationcountry,locationzip,locationlatitude,locationlongitude,cid,venueid,
+venue,address,city,state,zip,country,latitude,longitude,vcapacity,vcategory)
+select temp_id,cons,location,locationaddress,locationcity,locationstate,
+locationcountry,locationzip,locationlatitude,locationlongitude,cid,venueid,
+venue,address,city,state,zip,country,latitude,longitude,capacity,vcategory from Set_Rep_demo
+
+select distinct d_status from Eddi_data..venue_rep_new
+
+select count(*) from Eddi_data..venue_rep_new where d_status='Eddi_Refresh_Set151' --9479
+select * from Eddi_data..venue_rep_new where d_status='Eddi_Refresh_Set151'
+
+update Eddi_data..venue_rep_new set d_status='Eddi_Refresh_Set151' where isnull(d_status,'')=''
+
+***/
+---------------------------------------------------------------------------------------------
+----KG Execution---
+--Check the table names, old output table name and kginput_india or just kginput in the procedure--
+select count(*) from output_1129 --591053,590927,718182,582828,338639
+select count(*) from output_1129_copy --
+
+exec kginput Eddi_Refresh_Set152
+
+select top 100 * from output_1129 where venue_cid is not null
+--drop table output_1129
+--select * into output_1129 from output_1129_copy
+--select top 10 * from output_1129_copy
+--drop table Eddi_Refresh_Set152
+--drop table KG1129_input
+--drop table KG1129
+--drop table KG1129op
+--drop table temp_1129
+--drop table output_1129_copy
+--select FORMAT(getdate()-10,'MMdd')
+
+select * from KG1129_input
+select * from KG1129 where status=0
+select * from KG1129op where id=25192
+
+select count(*) from KG1129_input --12096,17753,12040,5336
+select count(*) from KG1129 --11893,17666,11955,5326
+select count(*) from KG1129op --
+
+select count (*), status from KG1129 with (nolock) group by status
+
+update KG1129 set status=0 where status=3
+update KG1129 set status=3 where status=0
+
+select * from KG1129 where status =3
+
+select * from machines_gsearch
+
+--5 is machine count 7 domainid, 7 processid. (check the machine count and exec splitids)
+exec splitids_V1 5,7,7;
+select * from KG1129 where gsearch like '%Magistratska%'
+
+select * from pyscripts where domainid=7 and processid=7
+update pyscripts set proxyid=2 where domainid=7 and processid=7
+Select distinct proxyid from pyscripts
+
+
+select count(*) as status1 from KG1129 where status=1 and id between 1 and 38616 group by status
+Union all
+select count(1) from KG1129 where status=1 and id between 10174 and 20807 group by status
+Union all
+select count(1) from KG1129 where status=1 and id between 20808 and 33135 group by status
+Union all
+select count(1) from KG1129 where status=1 and id between 33136 and 43781 group by status
+Union all
+select count(1) from KG1129 where status=1 and id between 43782 and 51152 group by status
+
+
+SELECT
+    SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) AS status0,
+    SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) AS status1,
+    SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) AS status3
+FROM KG1129
+WHERE id BETWEEN 1 AND 8297
+
+UNION ALL
+
+SELECT
+    SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) AS status0,
+    SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) AS status1,
+    SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) AS status3
+FROM KG1129
+WHERE id BETWEEN 8298 AND 13230
+
+UNION ALL
+
+SELECT
+    SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) AS status0,
+    SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) AS status1,
+    SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) AS status3
+FROM KG1129
+WHERE id BETWEEN 13231 AND 21784
+
+UNION ALL
+
+SELECT
+    SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) AS status0,
+    SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) AS status1,
+    SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) AS status3
+FROM KG1129
+WHERE id BETWEEN 21785 AND 30087
+
+UNION ALL
+
+SELECT
+    SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) AS status0,
+    SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) AS status1,
+    SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) AS status3
+FROM KG1129
+WHERE id BETWEEN 30088 AND 38616;
+
+
+
+------------------------------------------------------------------------------------------------------------------------------
+---Venue Mapping---
+
+use eddiextraction
+--Delete the id column and add new id's
+--Before starting the venue mapping remove duplicate id's and add new id's
+
+select id,count(*) from Eddi_Refresh_Set152 group by id having count(id)>1
+
+--alter table Eddi_Refresh_Set152 drop column id
+--alter table Eddi_Refresh_Set152 add id int identity(1,1)
+
+select * into Eddi_Refresh_Set152_Backup_Initial from Eddi_Refresh_Set152 --184471,367816,249872,167468
+select domainid, count(*) from Eddi_Refresh_Set152 group by domainid
+select count(*) from Eddi_Refresh_Set152_Backup_Initial
+/*
+--Select distinct venueid,venue,address,city,state,zip,country,latitude,longitude,capacity, vcategory into Set103_data from Eddi_Refresh_Set151 where isnull(venueid,'')!='' -- 13786, 12147,13137
+
+--set70 data update in repository table 
+update a set 
+a.Venue=b.venue,
+a.Address=b.Address,
+a.City=b.City,
+a.State=b.State,
+a.Country=b.Country,
+a.Zip=b.Zip,
+a.Latitude=b.Latitude,
+a.Longitude=b.Longitude,
+a.VCapacity=b.Capacity,
+a.vcategory=b.vcategory
+from eddi_data..venue_rep_new a 
+join set103_data b on a.venueid=b.venueid  --926703,851436
+*/
+
+exec sp_refreshview EventsData_Live
+
+drop table V_Eddi
+
+select distinct venueid,venue,address,city,state,zip,country,latitude,longitude,capacity into V_Eddi from EventsData_Live --362783
+
+update eddi_data..venue_rep_new set up_live=null where up_live is not null --3484082
+
+--update the live table values to repository
+update a set 
+a.venue=b.venue,
+a.Address=b.Address,
+a.City=b.City,
+a.State=b.State,
+a.Country=b.Country,
+a.Zip=b.Zip,	
+a.Latitude=b.Latitude,
+a.Longitude=b.Longitude,
+a.vcapacity=b.capacity,
+a.up_live='Live_update'
+from eddi_data..venue_rep_new a 
+join eddiextraction..v_eddi b on a.venueid=b.venueid --3268082
+
+/*update a set 
+a.up_live='Live_update'
+from eddi_data..venue_rep_new a 
+join eddiextraction..v_eddi b on a.venueid=b.venueid*/
+
+select Count(*) from Eddi_Refresh_Set152 --184471,367816,249872,167468
+
+select Count(*) from KG1129_input --12096,17753,12040,5336
+
+select Count(*) from KG1129 --11893,17666,11955,5326
+
+select Count(*) from KG1129OP --7178,9052,5626,2855
+
+select FORMAT(getdate()-3,'MMdd')
+
+Exec [dbo].[Mapping1]
+
+select capacity from KG1129OP where len(capacity)>120
+update KG1129OP set capacity=0 where len(capacity)>120
+
+select * from KG1129OP where len(capacity)>120
+
+select top 100 * from KG1129_input where len(locationaddress)>250
+update KG1129_input set locationaddress=null where len(locationaddress)>250
+
+select top 100 * from KG1129op where len(cid_address1)>250
+
+--If there is an error drop these 2 tables and re-run again--
+--drop table Set1129_ip_op
+--drop table Set1129_ML
+
+--check state and country abbreviation procdure are worked or not.
+
+select top 100 * from Set1129_ip_op order by input_id
+select top 100 * from Set1129_ML order by input_id
+
+select * from Set1129_ip_op order by input_id
+select * from Set1129_ML order by input_id
+
+select count (*) from Set1129_ip_op --6961,2777,7038,8961,4950,2799
+select Count(*) from Set1129_ML --6944,2573,6894,8943,4928,2794
+
+update Set1129_ML set [Input Locationcountry]='United Kingdom' where [Input Locationcountry] in ('Scotland', 'UK', 'England', 'Wales', 'Northern Ireland','Great Britain')
+update Set1129_ML set [Input Locationcountry]='United States' where [Input Locationcountry] in ('Ohio','Oregon','FL','KS','NJ','OH','OK','TX','UT','NV','HI','MI','OR' )
+update Set1129_ML set [Input Locationcountry]='Ireland' where [Input Locationcountry] in ('republic of ireland')
+update Set1129_ML set [Input Locationcountry]='Russia' where [Input Locationcountry] in ('Russian Federation')
+update Set1129_ML set [Input Locationcountry]='South Korea' where [Input Locationcountry] in ('Korea, Republic Of')
+update Set1129_ML set [Input Locationcountry]='Vietnam' where [Input Locationcountry] in ('Viet Nam')
+update Set1129_ML set [Input Locationcountry]='Moldova' where [Input Locationcountry] in ('Moldova, Republic Of')
+update Set1129_ML set [Input Locationcountry]='Cote d''Ivoire' where [Input Locationcountry] in ('Cote D Ivoire')
+update Set1129_ML set [Input Locationcountry]='Vatican City' where [Input Locationcountry] in ('Holy See (Vatican City)')
+update Set1129_ML set [Input Locationcountry]='Hong Kong' where [Input Locationcountry] in ('Hong Kong (SAR)')
+update Set1129_ML set [Input Locationcountry]='Isle of Man' where [Input Locationcountry] in ('Man, Isle of')
+update Set1129_ML set [Input Locationcountry]='Macau' where [Input Locationcountry] in ('Macao SAR China')
+update Set1129_ML set [Input Locationcountry]='St Vincent & the Grenadines' where [Input Locationcountry] in ('St. Vincent')
+update Set1129_ML set [Input Locationcountry]='Netherlands' where [Input Locationcountry]='Netherland'
+update Set1129_ML set [Input Locationcountry]='St Vincent & the Grenadines' where [Input Locationcountry]='Saint Vincent and the Grenadines'
+update Set1129_ML set [Input Locationcountry]='Dominican Republic' where [Input Locationcountry] in ('Dominican Rep.')
+update Set1129_ML set [Input Locationcity]='Bengaluru' where [Input Locationcity]='Bangalore, Karnataka'
+update Set1129_ML set [Input Locationcity]='Bengaluru' where [Input Locationcity]='Bangalore Urban'
+update Set1129_ML set [Input Locationcity]='Visakhapatnam' where [Input Locationcity]='Vizag (Visakhapatnam)'
+update Set1129_ML set [Input Locationcity]='Bengaluru' where [Input Locationcity]='Bangalore'
+update Set1129_ML set [Input Locationcity]='Mysuru' where [Input Locationcity]='Mysuru (Mysore)'
+update Set1129_ML set [Input Locationcity]='Puducherry' where [Input Locationcity]='Pondicherry'
+update Set1129_ML set [Input Locationcity]='Mangaluru' where [Input Locationcity]='Mangalore'
+update Set1129_ML set [Input Locationcity]='Vienna' where [Input Locationcity]='Wien'
+update Set1129_ML set [Input Locationcity]='Chennai' where [Input Locationcity] like '%Chennai,Tamil%'
+update Set1129_ML set [Input Locationcity]='Chennai' where [Input Locationcity] like '%Chennai, Tamil%'
+update Set1129_ML set [Input Locationcity]='Gurugram' where [Input Locationcity]='Gurgaon'
+update Set1129_ML set [Input Locationcity]='Bucharest' where [Input Locationcity]='Bucuresti'
+update Set1129_ML set [Input Locationcity]='Visakhapatnam' where [Input Locationcity]='vizag'
+update Set1129_ML set [Input Locationcity]='New Delhi' where [Input Locationcity] like '%New delhi, delhi%'
+update Set1129_ML set [Input Locationcity]='Delhi' where [Input Locationcity]='delhi-NCR'
+update Set1129_ML set [Input Locationcity]='Mangaluru' where [Input Locationcity]='Mangaluru (Mangalore)'
+update Set1129_ML set [Input Locationcity]='Bengaluru' where [Input Locationcity] like 'Bengaluru%'
+update Set1129_ML set [Input Locationcity]='Bengaluru' where [Input Locationcity] like 'Bangalore%'
+update Set1129_ML set [Input Locationcity]='Anjuna' where [Input Locationcity] like 'Anjuna%' and [Input Locationcountry]='India'
+update Set1129_ML set [Input Locationcity]='Ahmedabad' where [Input Locationcity] like 'Ahmedabad%' and [Input Locationcountry]='India'
+
+
+select distinct input_id, [Input Locationcountry], [Google  Country] from Set1129_ML where [Google  Country]='japan' order by [Input Locationcountry]
+
+update Set1129_ML set [Input Locationcountry]='Japan' where input_id in (11908,12947,13003,40054,5133,60792,66569,66572,66575,66593,66594,66596,66597,66599,66600,66608,66614,66616,66619,66620,72579,72580,72589,72598,72604,72613,72614,72620,72630,72640)
+
+select * from Set1129_ML where [Input Locationcountry] is null and [Input locationstate] is not null order by [Input Locationcity]
+select distinct [Input Locationcountry] from Set1129_ML order by [Input Locationcountry]
+select * from Set1129_ML where [Input Locationcountry]='0'
+
+select * from Set1129_ML where [Input Locationcountry] is null order by [Google  Country],[Input Locationcity]
+update Set1129_ML set [Input Locationcountry]='Australia' where input_id in (4293)
+update Set1129_ML set [Input Locationcountry]='United States' where input_id in (11044)
+update Set1129_ML set [Input Locationcountry]='United Kingdom' where input_id in (15969)
+update Set1129_ML set [Input Locationcountry]='India' where input_id in (39904)
+update Set1129_ML set [Input Locationcountry]='South Africa' where input_id in (61781)
+update Set1129_ML set [Input Locationcountry]='St Vincent & the Grenadines' where input_id in (3329)
+update Set1129_ML set [Input Locationcountry]='Canada' where input_id in (23628)
+
+select * from Set1129_ML where [Input Locationcountry]='India' order by [Input Locationcity]
+
+select * from Set1129_ML where input_id=105
+select * from set_check_1 where input_id=105
+
+select Input_ID,[Input Location],[Google  Name],[Input Locationaddress],[Google  address],[Input Locationcity],[Google city],
+[Input locationstate],[Google state],[Input locationzip],[Google  Zip],[Input Locationcountry],[Google  Country]
+from Set1129_ML
+
+--Run DS Machine (Turn On the DS machine)
+
+select count(*) from set_check_1 where m_status='maped_venues' --5625,5619,2322,1432
+
+select count(*) from set_check_1 where m_status='unmaped_venues' --1134,2970,2321,1195
+
+select count(*) from set_check_1 where m_status='manual_analyses' --73,183,131,86
+
+select count(*) from set_check_1 where m_status='manual_analyses2' --62,171,154,81
+
+--select * from set_check_1 where m_status='unmaped_venues' and input_id=33963
+--select * from set_check_1 where m_status='manual_analyses'
+
+select Input_ID,[Input Location],[Google  Name],[Input Locationaddress],[Google  address],[Input Locationcity],[Google city],
+[Input locationstate],[Google state],[Input locationzip],[Google  Zip],[Input Locationcountry],[Google  Country],m_status 
+from set_check_1 where m_status='unmaped_venues'
+
+update set_check_1 set m_status='maped_venues' where Input_ID in (705,1010,2353,265,4390,7747,10616,14187,12005,12716,13771,18102,18123,18766,16389,21560,23635,22125,24965,24977,2179,24514,24727,2401,3618,5883,3942,4075,4794,7855,10250,8294,8499,9158,11332,11357,15547,16534,16539,16596,17122,12320,14602,18179,18631,19073,19160,19563,19577,19774,20397,20539,20610,20743,20793,21276,21657,15456,15857,15936,15937,16224,16810,17430,24373,24884,24963,24993,18665,20093,20205,21722,23021,23371,24732)
+
+SELECT MIN(VENUEID) AS minVENUEID,
+  MAX(VENUEID) AS maxVENUEID
+FROM vid_create_1 where venueid between 900000 AND 1000000 --989444,992365,993934
+
+SELECT MIN(VENUEID) AS minVENUEID,
+  MAX(VENUEID) AS maxVENUEID
+FROM Eddi_Refresh_Set151 where venueid between 900000 AND 1000000 --989444,992365,993933
+
+SELECT MIN(VENUEID) AS minVENUEID,
+  MAX(VENUEID) AS maxVENUEID
+FROM Eddi_Data..Venue_rep_new where venueid between 900000 AND 1000000 --989444,992365,993933
+
+SELECT MIN(VENUEID) AS minVENUEID,
+  MAX(VENUEID) AS maxVENUEID
+FROM eventsdata_live where venueid between 900000 AND 1000000 --989444,992365,993933
+
+SELECT MIN(VENUEID) AS minVENUEID,
+  MAX(VENUEID) AS maxVENUEID
+FROM Eddi_Refresh_google0717 where venueid between 900000 AND 1000000 --587734,596074
+--259710 its last venueid created in output_cagliari table
+
+--pls start from 993935
+
+-- Edit Mapping2 procedure date and venueid
+
+Exec [dbo].[Mapping2] Eddi_Refresh_Set152
+
+select FORMAT(getdate()-3,'MMdd')
+/*** If there is any issue in Mapping2 exec these queries
+alter table Eddi_Refresh_Set152 drop column Venue,Address,City,State,Country,zip,Latitude,Longitude,VCapacity,VCategory,Venueid,Vid_status,up_live
+DROP  index vid_x ON Eddi_Refresh_Set152;
+update Eddi_Refresh_Set152 set v_status=null where v_status='Set 1 Matches' ***/
+
+--select top 10 * from Set1129_ml where len(vcapacity)>120
+--select top 10 * from Set1129_ip_op where len(vcapacity)>120
+--update Set1129_ip_op set vcapacity=0 where len(vcapacity)>120
+
+select top 10 * from Eddi_Refresh_Set152
+
+select distinct cid from Eddi_Refresh_Set152 where isnull(venueid,'')=''  --0
+
+select * from Eddi_Refresh_Set152 where isnull(venueid,'')='' and  isnull(venue,'')!='' --0
+
+select count(distinct cid)from Eddi_Refresh_Set152 --35355,44187,26934,28048,22076,24999,18432
+
+select count(distinct venueid )from Eddi_Refresh_Set152 --35319,44130,26911,28030,22057,24982,18422
+
+--If these 2 counts mismatches just check the extra venueid's
+with cte as
+(select venueid, count(distinct cid) aa from Eddi_Refresh_Set152
+group by venueid having count(distinct cid)>1)
+select distinct a.cid, a.venueid, a.venue, a.address, a.city, a.state, a.country  from Eddi_Refresh_Set152 a join cte b on
+a.venueid=b.venueid order by venueid
+
+select distinct v_status from Eddi_Refresh_Set152
+
+select count(distinct venue) from Eddi_Refresh_Set152 where v_status in ('after_value_match',
+'after_value_match LCCLL',
+'before_value_match',
+'before_value_match LCCLL',
+'cons match') and isnull(venue,'')!='' --32973,40112,24695,22779,18520,22446,16699
+
+alter table Eddi_Refresh_Set152 add Vid_2 nvarchar(1000)
+alter table Eddi_Refresh_Set152 add Address_1 nvarchar(1000)
+
+select distinct up_live from Eddi_Refresh_Set152
+
+update a set 
+a.Vid_2=b.venueid,
+a.Address_1=b.Address,
+a.UP_Live='Live_Vid_update'
+from Eddi_Refresh_Set152 a 
+join V_Eddi b on 
+a.venue=b.venue where  a.city=b.city and a.zip=b.zip and  isnull(a.UP_Live,'')=''--1
+
+select Distinct Venueid,vid_2, Venue, Address,address_1,city v_status from 
+Eddi_Refresh_Set152 where UP_Live='Live_Vid_update'
+
+--update Eddi_Refresh_Set152 set venueid=254462 where venueid=288837
+
+alter table Eddi_Refresh_Set152
+drop column Vid_2, Address_1
+--update Eddi_Refresh_Set152 set UP_Live=null where UP_Live='Live_Vid_update'
+
+select distinct vid_status from Eddi_Refresh_Set152
+
+/*update a set
+a.venue=b.venue,
+a.Address=b.Address,
+a.City=b.City,
+a.State=b.State,
+a.Country=b.Country,
+a.Zip=b.Zip,
+a.Latitude=b.Latitude,
+a.Longitude=b.Longitude,
+a.capacity=b.vcapacity
+from Eddi_Refresh_Set152 a 
+join eddi_data..venue_rep_new b on 
+a.venueid=b.venueid  where a.vid_status='VRN_CID' --7020*/
+
+update Eddi_Refresh_Set152 set address=null where address='null'
+update Eddi_Refresh_Set152 set City=null where City='null'
+update Eddi_Refresh_Set152 set State=null where State='null'
+update Eddi_Refresh_Set152 set zip=null where zip='null'
+update Eddi_Refresh_Set152 set address=null where address='None'
+update Eddi_Refresh_Set152 set City=null where City='None'
+update Eddi_Refresh_Set152 set State=null where State='None'
+update Eddi_Refresh_Set152 set zip=null where zip='None'
+update Eddi_Refresh_Set152 set capacity='0' where isnull(capacity,'')=''
+
+
+update Eddi_Refresh_Set152 set venue=ltrim(venue)
+update Eddi_Refresh_Set152 set address=ltrim(address)
+update Eddi_Refresh_Set152 set city=ltrim(city)
+update Eddi_Refresh_Set152 set state=ltrim(state)
+update Eddi_Refresh_Set152 set zip=ltrim(zip)
+update Eddi_Refresh_Set152 set country=ltrim(country)
+update Eddi_Refresh_Set152 set latitude=ltrim(latitude)
+update Eddi_Refresh_Set152 set longitude=ltrim(longitude)
+update Eddi_Refresh_Set152 set capacity=ltrim(capacity)
+update Eddi_Refresh_Set152 set vcapacity=ltrim(vcapacity)
+update Eddi_Refresh_Set152 set vcategory=ltrim(vcategory)
+
+update Eddi_Refresh_Set152 set venue=rtrim(venue)
+update Eddi_Refresh_Set152 set address=rtrim(address)
+update Eddi_Refresh_Set152 set city=rtrim(city)
+update Eddi_Refresh_Set152 set state=rtrim(state)
+update Eddi_Refresh_Set152 set zip=rtrim(zip)
+update Eddi_Refresh_Set152 set country=rtrim(country)
+update Eddi_Refresh_Set152 set latitude=rtrim(latitude)
+update Eddi_Refresh_Set152 set longitude=rtrim(longitude)
+update Eddi_Refresh_Set152 set capacity=rtrim(capacity)
+update Eddi_Refresh_Set152 set vcapacity=rtrim(vcapacity)
+update Eddi_Refresh_Set152 set vcategory=rtrim(vcategory)
+
+
+--Total no of records
+select count(*) from Eddi_Refresh_Set152 --536169,218195,184471,367816,249872,167468
+
+--Venue affected Event
+select Count(*) from Eddi_Refresh_Set152 where isnull(venue,'')!='' --496996,207208,171886,271334,197610,134197
+
+--Venue Null Event count
+select Count(*) from Eddi_Refresh_Set152 where isnull(venue,'')='' --39173,10987,12585,96482,52262,33271
+
+--No of unique venues
+select count(Distinct Venueid) from Eddi_Refresh_Set152 where isnull(venue,'')!='' --44130,26911,28030,22057,27826,18422
+select count(Distinct Venueid) from Eddi_Refresh_Set152 where isnull(UP_Live,'')='' and isnull(venue,'')!='' and vid_status!='New_vid'--49
+
+--No of venues matched with liveDB
+select count(Distinct Venueid) from Eddi_Refresh_Set152 where isnull(UP_Live,'')!='' --41093,25498,24849,19439,23191,16243
+
+--New venueid count
+select count(Distinct Venueid) from Eddi_Refresh_Set152 where isnull(venue,'')!='' and vid_status='New_vid' --2012,1065,2919,1260,850
+
+--No of venues matched with Rep
+select count(Distinct Venueid) from Eddi_Refresh_Set152 where isnull(UP_Live,'')='' and isnull(venue,'')!=''--2618,4606,2179
+
+select Distinct Venueid, Venue, Address, City, State, Country, zip, Latitude,Longitude,capacity,v_status,up_live from Eddi_Refresh_Set152 
+where isnull(UP_Live,'')='' and v_status in 
+('after_value_match','after_value_match LCCLL','before_value_match','before_value_match LCCLL','cons match') --1279
+
+--No of venues (Set matches from Mapping process) matched with Rep
+--Rep Match plus this is --No of venues matched with Repository
+select Distinct Venueid, Venue, Address, City, State, Country, zip, Latitude,Longitude,capacity,v_status,up_live,vid_status from Eddi_Refresh_Set152 
+where isnull(UP_Live,'')='' and  v_status='Set 1 Matches' and vid_status='VRN_CID' --49+1279=1328
+
+select sum (49+1279)
+
+-- Create venueid's for null and then take the rep 
+select Distinct temp_id, Venueid, Venue, Address, City, State, zip, Country, v_status from Eddi_Refresh_Set152 
+where isnull (venueid,'')='' and isnull(venue,'')!=''
+
+select Distinct temp_id, Venueid, Venue, Address, City, State, zip, Country, v_status from Eddi_Refresh_Set152 
+where isnull (venueid,'')='' and venue='null'
+
+select Distinct temp_id, Venueid, Venue, Address, City, State, zip, Country, v_status from Eddi_Refresh_Set152 
+where isnull (venueid,'')!='' and isnull(venue,'')=''
+
+select Distinct temp_id, Venueid, Venue, Address, City, State, zip, Country, v_status from Eddi_Refresh_Set152 
+where isnull (venueid,'')!='' and venue='null'
+
+--delete from Eddi_Refresh_Set152 where venueid in (16557)
+
+select * into Eddi_Refresh_Set152_REP from Eddi_Refresh_Set152 --243282,536169,218195,184471,167468
+select count(*) from Eddi_Refresh_Set152_REP
+
+-- Add non-working records into this table
+
+INSERT INTO output_venuenull_kg (domainid,eventid,referenceid,subreferenceid,eventname,eventcategory,description,eventstatus,startdate,enddate,eventsubcategory,priorstartdate,priorenddate,nextstartdate,nextenddate,organizername,organizerurl,exhibitorscount,floorsize,estimatedattendees,attendeeinformation,exhibitorinformation,location,locationaddress,locationcity,locationstate,locationcountry,locationregion,locationwebsite,locationphone,locationlatitude,locationlongitude,locationcontactfirstname,locationcontactlastname,locationcontacttitle,website,organizerphone,organizercontactfirstname,organizercontactlastname,note,day,religion,alerttype,alertlevel,alerturgencylevel,alertseveritylevel,alertcertaintylevel,region,delaytype,holidaytype,countrycode,language,sourceid,sourceurl,lastupdated,locationzip,accentid,class,capacity,event_ids,venue_ids,sub_event_id,COVID_status,Event_Frequency,price,postalcode,refresh_status,Venue_CID,Attendance_mode,min_price,max_price,currency_code,demand_status,set_table)
+SELECT domainid,eventid,referenceid,subreferenceid,eventname,eventcategory,description,eventstatus,startdate,enddate,eventsubcategory,priorstartdate,priorenddate,nextstartdate,nextenddate,organizername,organizerurl,exhibitorscount,floorsize,estimatedattendees,attendeeinformation,exhibitorinformation,location,locationaddress,locationcity,locationstate,locationcountry,locationregion,locationwebsite,locationphone,locationlatitude,locationlongitude,locationcontactfirstname,locationcontactlastname,locationcontacttitle,website,organizerphone,organizercontactfirstname,organizercontactlastname,note,day,religion,alerttype,alertlevel,alerturgencylevel,alertseveritylevel,alertcertaintylevel,region,delaytype,holidaytype,countrycode,language,sourceid,sourceurl,lastupdated,locationzip,accentid,class,capacity,event_ids,venue_ids,sub_event_id,COVID_status,Event_Frequency,price,postalcode,refresh_status,Venue_CID,Attendance_mode,min_price,max_price,currency_code,demand_status,
+'Eddi_Refresh_Set152_REP'
+FROM Eddi_Refresh_Set152_REP where isnull(venueid,'')='';
+
+delete FROM d from (SELECT *,ROW_NUMBER() OVER (PARTITION BY domainid,eventname,eventcategory,description,startdate,enddate,eventsubcategory,organizername,organizerurl,exhibitorscount,estimatedattendees,location,locationaddress,locationcity,locationstate,locationcountry,locationregion,locationwebsite,locationphone,locationlatitude,locationlongitude,website,note,countrycode,sourceid,sourceurl,locationzip,capacity,Event_Frequency,price,Attendance_mode ORDER BY referenceid) AS intRow
+FROM output_venuenull_kg) AS d WHERE intRow != 1
+
+select count(*) from output_venuenull_kg where set_table='Eddi_Refresh_Set152_REP' --11378
+select distinct set_table from output_venuenull_kg
+select top 100 * from output_venuenull_kg where isnull(eventstatus,'')=''
+--
+
+VENUE VALIDATION COMPLETED.
+
+--Permanently Closed
+alter table Eddi_Refresh_Set152 add c_status varchar(255)
+
+--alter table Eddi_Refresh_Set152 drop column c_status
+
+update a set
+a.c_status=b.company_status
+from Eddi_Refresh_Set152 a join 
+eddi_data..venue_rep_new b on 
+a.venueid=b.venueid where a.c_status is null
+
+select distinct c_status from Eddi_Refresh_Set152
+select count(c_status)from Eddi_Refresh_Set152 --189
+
+update a set
+a.c_status=b.company_status
+from Eddi_Refresh_Set152 a join 
+KG1129op b on
+a.cid=b.cid where a.c_status is null and b.company_status='closed'
+
+update a set
+a.c_status=b.company_status
+from Eddi_Refresh_Set152 a join 
+KG1129op b on
+a.cid=b.cid where a.c_status is null and b.company_status='Permanently closed'
+
+select distinct c_status from Eddi_Refresh_Set152
+select count(c_status)from Eddi_Refresh_Set152 --540
+
+Update Eddi_Refresh_Set152 set c_status='Permanently closed' where c_status='CLOSED'
+
+update a set
+a.company_status=b.c_status
+from eddi_data..venue_rep_new a join 
+Eddi_Refresh_Set152 b on
+a.venueid=b.venueid where a.company_status is null and b.c_status='Permanently closed'
+
+select count(distinct venueid) from Eddi_Refresh_Set152 where c_status='Permanently closed' --101
+
+select venueid, count(c_status) aa from Eddi_Refresh_Set152 group by venueid having count(c_status)>1 order by aa desc
+
+select distinct cid, venueid, venue, address, city, zip, country,vid_status,count(venueid) numbers
+from Eddi_Refresh_Set152 
+where c_status='Permanently closed' 
+group by cid, venueid, venue, address, city, zip, country,vid_status 
+order by numbers desc
+
+select distinct cid, venueid, venue, address, city, zip, country from Eddi_Refresh_Set152 where c_status='Permanently closed'
+
+Update Eddi_Refresh_Set152 set c_status=null where venueid in (789918)
+Update eddi_data..venue_rep_new set company_status=null where venueid in (789918)
+
+delete from Eddi_Refresh_Set152 where c_status='Permanently closed' --535
+
+--Venue=city
+select count(*) from Eddi_Refresh_Set152 where venue=city --1
+
+select distinct cid, Venueid, Venue, Address, City, State, zip, Country from Eddi_Refresh_Set152 where venue=city --1
+
+--delete from Eddi_Refresh_Set152 where venueid in (1352110)
+
+delete from Eddi_Refresh_Set152 where venue=city
+
+-------------------------------------------------------------------------------------
+
+VENUE NORMALIZATION
+
+/***--Capacity
+Set50_capacity_OP
+
+-- VCapacity --- Capacity ---
+
+update Eddi_Refresh_Set152 set vcapacity=null where vcapacity='null'
+update Eddi_Refresh_Set152 set VCapacity=replace(VCapacity,',','')
+
+select distinct ref_id, capacity from KG1129op where capacity is not null and capacity like '%[a-z]%' --148
+***/
+
+select distinct a.ref_id,a.capacity,b.Temp_id,b.venueid,b.capacity,b.vcapacity from KG1129op a join Eddi_Refresh_Set152 b on																				
+a.ref_id=b.temp_id where isnull(a.capacity,'')!='' and isnull(b.vcapacity,'')=''
+
+update a set
+a.vcapacity=b.capacity
+from Eddi_Refresh_Set152 a join KG1129op b on
+a.temp_id=b.ref_id where isnull(a.vcapacity,'')=''
+
+select distinct venueid, vcapacity from Eddi_Refresh_Set152 where vcapacity is not null and isnull(venueid,'')!='' and vcapacity!='0'
+
+select distinct cid, venueid,venue, address, city, zip, country, vcapacity,capacity from Eddi_Refresh_Set152 where vcapacity like '%[a-z]%' and venueid is not null
+
+select distinct venueid,vcapacity,capacity from Eddi_Refresh_Set152 where vcapacity not like '%[0-9]%'
+
+select distinct vcapacity from Eddi_Refresh_Set152 where venueid is not null order by vcapacity
+
+--select distinct cid, venueid,venue, address, city, zip, country, vcapacity,capacity from Eddi_Refresh_Set152 where venueid in 
+(3208453)
+
+select distinct venueid,vcapacity,capacity from Eddi_Refresh_Set152 where vcapacity like '% %' and venueid is not null
+select distinct venueid,vcapacity,capacity from Eddi_Refresh_Set152 where vcapacity like '%–%' and venueid is not null
+select distinct venueid,vcapacity,capacity from Eddi_Refresh_Set152 where vcapacity like '%+%' and venueid is not null
+select distinct venueid,vcapacity,capacity from Eddi_Refresh_Set152 where vcapacity like '%.%' and venueid is not null
+select distinct venueid,vcapacity,capacity from Eddi_Refresh_Set152 where vcapacity like '%-%' and venueid is not null
+select distinct venueid,vcapacity,capacity from Eddi_Refresh_Set152 where vcapacity like '%/%' and venueid is not null
+select distinct venueid,vcapacity,capacity from Eddi_Refresh_Set152 where vcapacity like '%,%' and venueid is not null
+select distinct venueid,vcapacity,capacity from Eddi_Refresh_Set152 where vcapacity like '%~%' and venueid is not null
+select distinct venueid,vcapacity,capacity from Eddi_Refresh_Set152 where vcapacity like '%;%' and venueid is not null
+select distinct venueid,vcapacity,capacity from Eddi_Refresh_Set152 where vcapacity like '%:%' and venueid is not null
+select distinct venueid,vcapacity,capacity from Eddi_Refresh_Set152 where vcapacity like '%(%' and venueid is not null
+select distinct venueid,vcapacity,capacity from Eddi_Refresh_Set152 where vcapacity like '%>%' and venueid is not null
+
+update Eddi_Refresh_Set152 set vcapacity=0 where vcapacity is null
+update Eddi_Refresh_Set152 set capacity=0 where capacity is null
+
+update Eddi_Refresh_Set152 set vcapacity=capacity where vcapacity=0 and venueid is not null
+update Eddi_Refresh_Set152 set capacity=vcapacity where capacity=0 and venueid is not null
+
+select distinct cid, venueid,venue, address, city, zip, country,vcapacity,capacity from Eddi_Refresh_Set152 where capacity!=vcapacity and venueid is not null
+
+with cte as
+(select venueid, count(distinct vcapacity) aa from Eddi_Refresh_Set152
+group by venueid having count(distinct vcapacity)>1)
+select distinct a.cid, a.venueid, a.venue, a.address, a.city, a.state, a.country, a.vcapacity, a.capacity from Eddi_Refresh_Set152 a join cte b on
+a.venueid=b.venueid order by venueid
+
+with cte as
+(select venueid, count(distinct capacity) aa from Eddi_Refresh_Set152
+group by venueid having count(distinct capacity)>1)
+select distinct a.cid, a.venueid, a.venue, a.address, a.city, a.state, a.country, a.vcapacity, a.capacity from Eddi_Refresh_Set152 a join cte b on
+a.venueid=b.venueid order by venueid
+
+select distinct a.cid, a.venueid from  
+(select cid, venueid,vcapacity
+   from Eddi_Refresh_Set152
+where vcapacity is null) a,
+(select cid, venueid,vcapacity 
+from Eddi_Refresh_Set152
+where vcapacity is not null) b
+where a.venueid=b.venueid;
+
+select distinct venueid,venue, address, city, state,zip, country, vcapacity,capacity from Eddi_Refresh_Set152 where vcapacity is null and venueid is not null
+select distinct venueid,venue, address, city, state,zip, country, vcapacity,capacity from Eddi_Refresh_Set152 where capacity is null and venueid is not null
+
+Select distinct cid,venueid,venue,address,city,zip,country,capacity, vcapacity, vcategory from Eddi_Refresh_Set152
+where vcapacity=0 and vid_status='New_vid' order by vcategory,country
+
+Select distinct cid,venueid,venue,address,city,zip,country,capacity, vcategory from Eddi_Refresh_Set152
+where vcapacity=0 and venueid is not null and venue like '%stadium%' and vid_status!='New_vid' order by venueid
+
+Select distinct cid,venueid,venue,address,city,zip,country,vcapacity, vcategory from Eddi_Refresh_Set152
+where vcapacity=0 and venueid is not null and vcategory like '%Stadium%' and vid_status!='New_vid'
+
+Select distinct cid,venueid,venue,address,city,zip,country,vcapacity, vcategory from Eddi_Refresh_Set152
+where vcapacity=0 and venueid is not null and vcategory like '%Sports complex%' and vid_status!='New_vid' order by venueid
+
+select distinct a.cid,a.venueid,a.venue,b.venue,a.address,b.address,a.city,b.city,a.vcapacity,b.vcapacity from eddi_data..venue_rep_new a join Eddi_Refresh_Set152 b on 
+a.venueid=b.venueid where a.vcapacity='0' and b.vcapacity!='0' order by a.venueid
+
+update a set
+a.vcapacity=b.vcapacity
+from eddi_data..venue_rep_new a join Eddi_Refresh_Set152 b on
+a.venueid=b.venueid where a.vcapacity='0' and b.vcapacity!='0'
+
+select distinct a.cid,a.venueid,a.venue,b.venue,a.address,b.address,a.city,b.city,a.vcapacity,b.vcapacity from eddi_data..venue_rep_new a join Eddi_Refresh_Set152 b on 
+a.venueid=b.venueid where a.vcapacity!='0' and b.vcapacity='0' order by a.venueid
+
+update a set
+a.vcapacity=b.vcapacity,
+a.capacity=b.vcapacity
+from Eddi_Refresh_Set152 a join eddi_data..venue_rep_new b on
+a.venueid=b.venueid where a.vcapacity='0' and b.vcapacity!='0'
+
+select distinct a.ref_id,a.capacity,b.Temp_id,b.venueid,b.capacity,b.vcapacity from KG1129OP a join Eddi_Refresh_Set152 b on 
+a.ref_id=b.temp_id where isnull(a.capacity,'')!='' and b.venueid is not null order by a.capacity
+
+update KG1129OP set capacity=null where capacity='null'
+update KG1129OP set Capacity=replace(Capacity,',','')
+update KG1129OP set capacity=0 where capacity is null
+update KG1129OP set capacity=ltrim(capacity)
+update KG1129OP set capacity=rtrim(capacity)
+
+select distinct a.ref_id,a.capacity,b.Temp_id,b.venueid,b.capacity,b.vcapacity from KG1129OP a join Eddi_Refresh_Set152 b on 
+a.ref_id=b.temp_id where isnull(a.capacity,'')!='' and a.capacity not like '%[a-z]%' and b.capacity=0 and b.venueid is not null 
+
+select distinct a.capacity,b.venueid,b.vcapacity from KG1129OP a join Eddi_Refresh_Set152 b on 
+a.ref_id=b.temp_id where a.capacity!=b.vcapacity order by a.capacity
+
+select distinct a.ref_id,a.capacity,b.Temp_id,b.venueid,b.capacity,b.vcapacity from KG1129OP a join Eddi_Refresh_Set152 b on 
+a.ref_id=b.temp_id where b.capacity=0 and a.capacity!='0'
+
+select distinct b.cid,a.venueid,a.venue,b.venue,a.address,b.address,a.city,b.city,a.capacity,b.vcapacity from v_eddi a join Eddi_Refresh_Set152 b on 
+a.venueid=b.venueid where a.capacity!='0' and b.vcapacity='0' order by a.venueid
+
+select distinct cid, venueid,venue, address, city, state,zip, country, vcapacity,capacity,vcategory from Eddi_Refresh_Set152 where vcapacity!=capacity
+
+--VCategory	
+
+select distinct cid, venueid,venue, address, city, state,zip, country, vcapacity,vcategory from Eddi_Refresh_Set152 where vcategory like '%[0-9]%'
+
+select distinct cid, venueid,venue, address, city, state,zip, country, vcapacity,vcategory from Eddi_Refresh_Set152 where vcategory not like '%[a-z]%'
+order by country,vcategory
+
+with cte as
+(select venueid, count(distinct vcategory) aa from Eddi_Refresh_Set152
+group by venueid having count(distinct vcategory)>1)
+select distinct a.cid, a.venueid, a.venue, a.address, a.city, a.state,a.zip,a.country, a.vcapacity,a.vcategory from Eddi_Refresh_Set152 a join cte b on
+a.venueid=b.venueid order by venueid
+
+select distinct a.cid, a.venueid, a.venue, b.venue, a.address, b.address, a.city, b.city, a.state, b.state, a.zip, b.zip, a.country, b.country, 
+a.vcategory, b.vcategory,a.vcapacity from Eddi_Refresh_Set152 a join eddi_data..venue_rep_new b on 
+a.venueid=b.venueid where a.VCategory!=b.vcategory
+
+select distinct a.cid, a.venueid, a.venue, b.cid_name, a.address, b.cid_address1, a.city, b.CID_city, a.state, b.CID__state, a.zip, b.CID_zipcode, a.country, b.CID_country, 
+a.vcapacity,a.vcategory, b.category from Eddi_Refresh_Set152 a join KG1129OP b on 
+a.cid=b.cid where a.VCategory!=b.category order by b.category
+
+select distinct cid, venueid, venue, address, city, state,zip, country, vcapacity,vcategory from Eddi_Refresh_Set152 where vcategory like '%Entertainment events%'
+select distinct cid, venueid, venue, address, city, state,zip, country, vcapacity,vcategory from Eddi_Refresh_Set152 where vcategory like '%Tradeshows, Business events and conferences%'
+select distinct cid, venueid, venue, address, city, state,zip, country, vcapacity,vcategory from Eddi_Refresh_Set152 where vcategory like '% in %'
+select distinct cid, venueid, venue, address, city, state,zip, country, vcapacity,vcategory from Eddi_Refresh_Set152 where vcategory is null
+select distinct cid, venueid, venue, address, city, state,zip, country, vcapacity,vcategory from Eddi_Refresh_Set152 where vcategory like '% en %'
+select distinct cid, venueid, venue, address, city, state,zip, country, vcapacity,vcategory from Eddi_Refresh_Set152 where vcategory like 'Holidays, Festivals and Celebrations'
+select distinct cid, venueid, venue, address, city, state,zip, country, vcapacity,vcategory from Eddi_Refresh_Set152 where vcategory like 'Community/Race Event'
+select distinct cid, venueid, venue, address, city, state,zip, country, vcapacity,vcategory from Eddi_Refresh_Set152 where vcategory like 'null'
+select distinct cid, venueid, venue, address, city, state,zip, country, vcapacity,vcategory from Eddi_Refresh_Set152 where len(vcategory)>30
+
+select distinct vcategory from Eddi_Refresh_Set152
+
+select distinct a.cid, a.venueid, a.venue, a.address, a.city from Eddi_Refresh_Set152 a join eddi_data..venue_rep_new b on
+a.venueid=b.venueid where a.vcategory is null and b.vcategory is not null
+
+update a set
+a.vcategory=b.vcategory
+from Eddi_Refresh_Set152 a join eddi_data..venue_rep_new b on
+a.venueid=b.venueid where a.vcategory is null and b.vcategory is not null
+
+select distinct a.cid, a.venueid, a.venue, a.address, a.city,a.vcategory,b.vcategory from eddi_data..venue_rep_new a join Eddi_Refresh_Set152 b on
+a.venueid=b.venueid where a.vcategory is null and b.vcategory is not null
+
+update a set
+a.vcategory=b.vcategory
+from eddi_data..venue_rep_new a join Eddi_Refresh_Set152 b on
+a.venueid=b.venueid where a.vcategory is null and b.vcategory is not null
+
+select top 10 * from Eddi_Refresh_Set152
+-------------------
+-------------------
+
+alter table Eddi_Refresh_Set152 add CityID nvarchar(100)
+
+update a SET
+a.cityid=b.cityid
+from Eddi_Refresh_Set152 a join eddi_data..cityid b on
+a.city=b.city and a.state=b.state and a.country=b.country and a.cityid is null
+
+select distinct cid, venueid, Venue, Address, City, State, Country, zip,cityid from Eddi_Refresh_Set152 where country='India' and cityid is null
+order by state,city
+
+select max(cityid) from eddi_data..cityid
+
+select * from eddi_data..cityid where city='New town' order by city
+
+INSERT INTO eddi_data..cityid (country, state, city,cityid) VALUES ('India', 'Himachal Pradesh', 'Palampur',2387)
+
+Update Eddi_Refresh_Set152 set city='Bengaluru' where city='Bangalore'
+
+select distinct cid, venueid, Venue, Address, City, State, Country, zip,cityid from Eddi_Refresh_Set152 where city='Aamby Valley City' and cityid is null
+
+-----------------
+
+exec [QA_venue] v_eddi
+
+select distinct venueid, venue, address, city, state, zip, country, latitude, longitude, vcategory, vcapacity, capacity from Eddi_Refresh_Set152
+
+select distinct a.venueid, a.venue, b.venue, a.address, b.address, a.city, b.city, a.state, b.state, a.zip, b.zip, 
+a.country, b.country, a.latitude, b.latitude, a.longitude, b.longitude, a.vcapacity,a.capacity, b.vcapacity, a.vcategory,b.vcategory 
+from Eddi_Refresh_Set152 a join eddi_data..venue_rep_new b on a.venueid=b.venueid
+
+select distinct a.venueid, a.venue, b.venue, a.address, b.address, a.city, b.city, a.state, b.state, a.zip, b.zip, 
+a.country, b.country,a.latitude, b.latitude, a.longitude, b.longitude, a.capacity, b.capacity from Eddi_Refresh_Set152 a join v_eddi b on 
+a.venueid=b.venueid
+
+drop table V_Eddi
+
+select distinct venueid,venue,address,city,state,zip,country,latitude,longitude,capacity into V_Eddi from EventsData_Live
+
+select distinct d_status from eddi_data..venue_rep_new
+
+select distinct venueid,venue,address,city,state,zip,country,latitude,longitude,capacity,city_id from Eddi_Refresh_Set152 where country='India'
+
+select distinct a.cid, a.venueid, a.venue, b.cid_name, a.address, b.cid_address1, a.city, b.CID_city, a.state, b.CID__state, a.zip, b.CID_zipcode, a.country, b.CID_country, 
+a.vcategory, b.category from Eddi_Refresh_Set152 a join KG1129OP b on 
+a.cid=b.cid where a.venue!=b.cid_name order by a.country
+
+with cte AS
+(select eventname,startdate,address,zip,count(distinct venue)ss from Eddi_Refresh_Set152
+group by eventname,startdate,address,zip having count(distinct venue) > 1)
+select distinct a.cid,a.venueid,a.venue,a.address,a.city,a.Country,a.eventname,a.startdate,sourceid
+from Eddi_Refresh_Set152 a join cte b on
+a.eventname=b.eventname and a.startdate=b.startdate and a.address=b.address and a.zip=b.zip order by eventname,venue,startdate
+
+
+
+
+select distinct top 10 * from KG1115OP where len(cid_latitude)>13 and len(cid_longitude)<8
+
+select distinct top 10 * into latlong_chk from KG1115OP where len(cid_latitude)>13 and len(cid_longitude)<8
+
+select * from latlong_chk
+drop table latlong_chk
+
+
+
+
+
+
+
+
+
+
